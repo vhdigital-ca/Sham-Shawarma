@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Sham Shawarma — Le goût du Levant, à la minute</title>
+<meta name="description" content="Sham Shawarma — shawarma grillé à la minute, fraîcheur garantie. Commandez en ligne ou venez nous voir sur le Plateau.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --ink:#1B1512;
+  --ink-70: rgba(27,21,18,.7);
+  --paper:#F6EFE1;
+  --paper-soft:#EEE3CC;
+  --paper-dim:#E6D8BC;
+  --brick:#A23A2C;
+  --brick-dark:#7E2C21;
+  --brick-light:#C4523F;
+  --gold:#C79A3A;
+  --gold-light:#E1BE73;
+  --olive:#5C6B49;
+  --line: rgba(27,21,18,.12);
+  --shadow-1: 0 1px 2px rgba(27,21,18,.06);
+  --shadow-2: 0 8px 24px rgba(27,21,18,.10);
+  --shadow-3: 0 24px 60px rgba(27,21,18,.16);
+  --radius: 20px;
+  --radius-sm: 12px;
+  --ease: cubic-bezier(.22,.9,.25,1);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Inter',system-ui,sans-serif;
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{max-width:100%; display:block;}
+a{color:inherit; text-decoration:none;}
+h1,h2,h3,h4{font-family:'Fraunces',serif; margin:0; font-weight:600; letter-spacing:-0.01em;}
+p{margin:0;}
+button{font-family:inherit; cursor:pointer;}
+section{position:relative;}
+:focus-visible{outline:2px solid var(--brick); outline-offset:3px; border-radius:4px;}
+
+/* language toggle: everything duplicated in .lang-fr / .lang-en */
+body.lang-fr .lang-en{display:none !important;}
+body.lang-en .lang-fr{display:none !important;}
+
+.wrap{max-width:1220px; margin:0 auto; padding:0 24px;}
+@media (max-width:640px){ .wrap{padding:0 18px;} }
+
+.eyebrow{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12.5px; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--brick);
+}
+.eyebrow::before{content:""; width:22px; height:1px; background:var(--brick); display:inline-block;}
+
+.btn{
+  position:relative; display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  padding:16px 30px; border-radius:999px; font-weight:700; font-size:15px;
+  border:1px solid transparent; transition:transform .28s var(--ease), box-shadow .28s var(--ease), background .28s var(--ease), color .28s var(--ease);
+  will-change:transform;
+}
+.btn-primary{
+  background:var(--brick); color:var(--paper);
+  box-shadow: 0 1px 1px rgba(0,0,0,.05), 0 10px 24px -8px rgba(162,58,44,.55);
+}
+.btn-primary:hover{ transform:translateY(-2px); box-shadow:0 2px 4px rgba(0,0,0,.08), 0 18px 34px -8px rgba(162,58,44,.65), 0 0 0 6px rgba(162,58,44,.10);}
+.btn-primary:active{ transform:translateY(0px) scale(.98); }
+.btn-ghost{
+  background:transparent; color:var(--ink); border-color:var(--line);
+}
+.btn-ghost:hover{ background:rgba(27,21,18,.05); transform:translateY(-2px); }
+.btn-light{ background:var(--paper); color:var(--ink); }
+.btn-light:hover{ transform:translateY(-2px); box-shadow:var(--shadow-2); }
+
+/* ============ REVEAL ON SCROLL ============ */
+.reveal{ opacity:0; transform:translateY(28px); transition:opacity .7s var(--ease), transform .7s var(--ease); }
+.reveal.up{ transform:translateY(28px); }
+.reveal.scale{ transform:translateY(18px) scale(.96); }
+.reveal.left{ transform:translateX(-32px); }
+.reveal.right{ transform:translateX(32px); }
+.reveal.in{ opacity:1; transform:translate(0,0) scale(1); }
+.stagger > * { transition-delay: calc(var(--i,0) * 90ms); }
+
+/* ============ NAVBAR ============ */
+header.nav{
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  padding:22px 0;
+  transition: padding .4s var(--ease), background .4s var(--ease), box-shadow .4s var(--ease), backdrop-filter .4s var(--ease);
+}
+header.nav .nav-inner{
+  max-width:1220px; margin:0 auto; padding:0 24px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+header.nav.scrolled{
+  padding:12px 0;
+  background:rgba(246,239,225,.82);
+  backdrop-filter:blur(14px) saturate(140%);
+  box-shadow:0 1px 0 var(--line), 0 12px 30px -20px rgba(27,21,18,.3);
+}
+.logo{ display:flex; align-items:center; gap:10px; font-family:'Fraunces',serif; font-weight:700; font-size:22px; letter-spacing:-.01em; }
+.logo .mark{ width:38px; height:38px; flex:none; }
+header.nav.scrolled .logo{ color:var(--ink); }
+header.nav:not(.scrolled) .logo{ color:var(--paper); }
+header.nav:not(.scrolled) .logo .flame{fill:var(--gold-light);}
+
+nav.links{ display:flex; align-items:center; gap:2px; }
+nav.links a.nl{
+  position:relative; padding:10px 16px; font-size:14.5px; font-weight:600;
+  transition:color .3s var(--ease);
+}
+header.nav.scrolled nav.links a.nl{ color:var(--ink-70); }
+header.nav:not(.scrolled) nav.links a.nl{ color:rgba(246,239,225,.88); }
+nav.links a.nl::after{
+  content:""; position:absolute; left:16px; right:16px; bottom:6px; height:2px;
+  background:currentColor; transform:scaleX(0); transform-origin:left; transition:transform .35s var(--ease); opacity:.55;
+}
+nav.links a.nl:hover{ color:var(--brick) !important; }
+header.nav:not(.scrolled) nav.links a.nl:hover{ color:var(--gold-light) !important; }
+nav.links a.nl:hover::after{ transform:scaleX(1); }
+
+.nav-right{ display:flex; align-items:center; gap:14px; }
+.lang-btn{
+  display:flex; border:1px solid; border-radius:999px; overflow:hidden; font-size:12.5px; font-weight:700;
+}
+header.nav.scrolled .lang-btn{ border-color:var(--line); }
+header.nav:not(.scrolled) .lang-btn{ border-color:rgba(246,239,225,.35); }
+.lang-btn button{
+  padding:7px 12px; background:transparent; border:none; color:inherit; opacity:.55; transition:all .25s var(--ease);
+}
+.lang-btn button.active{ opacity:1; background:var(--brick); color:var(--paper); }
+header.nav:not(.scrolled) .lang-btn button{ color:var(--paper); }
+
+.burger{ display:none; width:42px; height:42px; border-radius:50%; align-items:center; justify-content:center; border:1px solid var(--line); background:rgba(246,239,225,.7); }
+.burger span, .burger span::before, .burger span::after{
+  content:""; display:block; width:18px; height:2px; background:var(--ink); position:relative; transition:transform .3s var(--ease), opacity .3s var(--ease);
+}
+.burger span::before{ position:absolute; top:-6px;}
+.burger span::after{ position:absolute; top:6px;}
+
+@media (max-width:920px){
+  nav.links{ position:fixed; inset:0 0 0 auto; width:min(78vw,340px); height:100vh; background:var(--paper);
+    flex-direction:column; align-items:flex-start; justify-content:center; gap:6px; padding:40px;
+    transform:translateX(100%); transition:transform .45s var(--ease); box-shadow:-20px 0 60px rgba(0,0,0,.15); }
+  nav.links.open{ transform:translateX(0); }
+  nav.links a.nl{ color:var(--ink) !important; font-size:20px; padding:12px 6px; width:100%; }
+  .burger{ display:flex; }
+  .nav-cta-desktop{ display:none; }
+}
+
+/* ============ HERO ============ */
+.hero{
+  min-height:100svh; position:relative; display:flex; align-items:flex-end;
+  overflow:hidden; background:var(--ink);
+}
+.hero-media{ position:absolute; inset:0; }
+.hero-media img{ width:100%; height:100%; object-fit:cover; transform:scale(1.08); animation:heroZoom 16s ease-out forwards; }
+@keyframes heroZoom{ to{ transform:scale(1); } }
+.hero-media::after{
+  content:""; position:absolute; inset:0;
+  background:
+    linear-gradient(0deg, rgba(15,10,8,.92) 0%, rgba(15,10,8,.55) 38%, rgba(15,10,8,.25) 62%, rgba(15,10,8,.55) 100%);
+}
+.hero-inner{ position:relative; z-index:2; width:100%; padding:0 24px 96px; max-width:1220px; margin:0 auto; }
+.hero-badge{
+  display:inline-flex; align-items:center; gap:10px; padding:9px 16px 9px 10px; border-radius:999px;
+  background:rgba(246,239,225,.1); border:1px solid rgba(246,239,225,.25); color:var(--paper);
+  font-size:12.5px; font-weight:600; letter-spacing:.04em; backdrop-filter:blur(6px);
+}
+.hero-badge .dot{ width:8px; height:8px; border-radius:50%; background:var(--gold-light); box-shadow:0 0 0 4px rgba(225,190,115,.2); animation:pulse 2s ease-in-out infinite; }
+@keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.4;} }
+h1.hero-title{
+  color:var(--paper); font-size:clamp(42px,7.4vw,92px); line-height:.98; margin-top:22px; max-width:15ch;
+}
+h1.hero-title em{ font-style:italic; color:var(--gold-light); }
+p.hero-sub{
+  color:rgba(246,239,225,.8); font-size:clamp(16px,1.7vw,19px); max-width:46ch; margin-top:22px;
+}
+.hero-cta{ display:flex; gap:16px; margin-top:36px; flex-wrap:wrap; }
+.magnetic{ display:inline-block; }
+.hero-scroll{
+  position:absolute; right:24px; bottom:28px; z-index:2; display:flex; flex-direction:column; align-items:center; gap:10px;
+  color:rgba(246,239,225,.6); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+}
+.hero-scroll .line{ width:1px; height:46px; background:linear-gradient(180deg, rgba(246,239,225,.7), transparent); animation:scrollLine 2.2s ease-in-out infinite; }
+@keyframes scrollLine{ 0%{transform:scaleY(0); transform-origin:top;} 50%{transform:scaleY(1); transform-origin:top;} 51%{transform-origin:bottom;} 100%{transform:scaleY(0); transform-origin:bottom;} }
+@media (max-width:640px){ .hero-scroll{ display:none; } }
+
+/* ============ SECTION HEADERS ============ */
+.sec-head{ max-width:640px; margin-bottom:56px; }
+.sec-head h2{ font-size:clamp(30px,4.4vw,52px); margin-top:16px; line-height:1.04; }
+.sec-head p{ margin-top:16px; color:var(--ink-70); font-size:16.5px; max-width:52ch; }
+.sec-head.center{ margin-left:auto; margin-right:auto; text-align:center; }
+.sec-head.center .eyebrow::before{ display:none; }
+.sec-head.center p{ margin-left:auto; margin-right:auto; }
+
+.section-pad{ padding:110px 0; }
+@media (max-width:640px){ .section-pad{ padding:76px 0; } }
+
+/* torn-edge divider, signature motif referencing torn pita bread */
+.torn{ position:relative; height:34px; width:100%; overflow:hidden; }
+.torn svg{ width:100%; height:100%; display:block; }
+
+/* ============ INCONTOURNABLES ============ */
+.dish-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
+@media (max-width:1080px){ .dish-grid{ grid-template-columns:repeat(2,1fr);} }
+@media (max-width:560px){ .dish-grid{ grid-template-columns:1fr;} }
+.dish-card{
+  background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;
+  transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .4s var(--ease);
+}
+.dish-card:hover{ transform:translateY(-8px); box-shadow:var(--shadow-3); border-color:transparent; }
+.dish-media{ position:relative; aspect-ratio:4/3.1; overflow:hidden; }
+.dish-media img{ width:100%; height:100%; object-fit:cover; transition:transform .6s var(--ease); }
+.dish-card:hover .dish-media img{ transform:scale(1.08); }
+.badge-pop{
+  position:absolute; top:14px; left:14px; background:var(--gold); color:var(--ink); font-size:11px; font-weight:800;
+  padding:6px 12px; border-radius:999px; letter-spacing:.03em; box-shadow:var(--shadow-1);
+}
+.dish-body{ padding:20px 20px 22px; }
+.dish-top{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
+.dish-top h3{ font-size:19px; }
+.dish-price{ font-weight:700; color:var(--brick); font-family:'Fraunces',serif; font-size:18px; white-space:nowrap;}
+.dish-desc{ margin-top:8px; font-size:14.5px; color:var(--ink-70); }
+.dish-order{
+  margin-top:16px; display:inline-flex; align-items:center; gap:8px; font-size:13.5px; font-weight:700; color:var(--ink);
+  padding:10px 0; border-top:1px solid var(--line); width:100%; justify-content:space-between;
+}
+.dish-order .icon-circle{ width:32px; height:32px; border-radius:50%; background:var(--paper-soft); display:flex; align-items:center; justify-content:center; transition:background .3s var(--ease), transform .3s var(--ease); }
+.dish-card:hover .icon-circle{ background:var(--brick); color:var(--paper); transform:rotate(45deg); }
+
+/* ============ ABOUT / WHY US ============ */
+.about{ background:var(--ink); color:var(--paper); }
+.about .eyebrow{ color:var(--gold-light); }
+.about .eyebrow::before{ background:var(--gold-light); }
+.about-grid{ display:grid; grid-template-columns:1.1fr 1fr; gap:70px; align-items:center; }
+@media (max-width:900px){ .about-grid{ grid-template-columns:1fr; gap:40px; } }
+.about h2{ color:var(--paper); font-size:clamp(28px,4vw,44px); line-height:1.08; }
+.about h2 .accent{ color:var(--gold-light); font-style:italic; }
+.about p.lead{ margin-top:20px; color:rgba(246,239,225,.72); font-size:16.5px; max-width:52ch; }
+.why-list{ margin-top:34px; display:grid; gap:22px; }
+.why-item{ display:flex; gap:16px; align-items:flex-start; }
+.why-item .ic{ flex:none; width:44px; height:44px; border-radius:12px; background:rgba(246,239,225,.08); border:1px solid rgba(246,239,225,.14); display:flex; align-items:center; justify-content:center; color:var(--gold-light); }
+.why-item h4{ color:var(--paper); font-size:16px; font-family:'Inter'; font-weight:700; }
+.why-item p{ color:rgba(246,239,225,.62); font-size:14.5px; margin-top:4px; }
+.about-media{ position:relative; }
+.about-media .frame{ border-radius:var(--radius); overflow:hidden; aspect-ratio:4/5; box-shadow:var(--shadow-3); }
+.about-media .frame img{ width:100%; height:100%; object-fit:cover; }
+.spit{
+  position:absolute; bottom:-30px; left:-30px; width:120px; height:120px; background:var(--paper); border-radius:50%;
+  display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow-3);
+}
+.spit svg{ width:64px; height:64px; animation:spin 7s linear infinite; }
+@keyframes spin{ to{ transform:rotate(360deg); } }
+@media (max-width:900px){ .spit{ display:none; } }
+
+/* ============ MENU ============ */
+.menu-tabs{ display:flex; gap:10px; overflow-x:auto; padding-bottom:6px; margin-bottom:44px; scrollbar-width:none; }
+.menu-tabs::-webkit-scrollbar{ display:none; }
+.menu-tab{
+  flex:none; padding:12px 22px; border-radius:999px; border:1px solid var(--line); background:var(--paper);
+  font-size:14px; font-weight:700; color:var(--ink-70); transition:all .3s var(--ease); white-space:nowrap;
+}
+.menu-tab.active, .menu-tab:hover{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
+.menu-panel{ display:none; }
+.menu-panel.active{ display:block; }
+.menu-list{ display:grid; grid-template-columns:1fr 1fr; gap:14px 40px; }
+@media (max-width:800px){ .menu-list{ grid-template-columns:1fr; } }
+.menu-item{ display:flex; gap:16px; padding:18px 0; border-bottom:1px dashed var(--line); }
+.menu-item .thumb{ flex:none; width:72px; height:72px; border-radius:12px; overflow:hidden; background:var(--paper-soft); }
+.menu-item .thumb img{ width:100%; height:100%; object-fit:cover; }
+.menu-item .info{ flex:1; min-width:0; }
+.menu-item .row1{ display:flex; justify-content:space-between; gap:10px; align-items:baseline; }
+.menu-item h4{ font-family:'Fraunces',serif; font-size:16.5px; font-weight:600; }
+.menu-item .price{ font-family:'Fraunces',serif; color:var(--brick); font-weight:700; white-space:nowrap; }
+.menu-item p{ font-size:13.5px; color:var(--ink-70); margin-top:5px; }
+.menu-note{ margin-top:44px; padding:20px 24px; border-radius:var(--radius-sm); background:var(--paper-soft); font-size:14px; color:var(--ink-70); display:flex; gap:12px; align-items:flex-start; }
+
+/* ============ GALLERY ============ */
+.carousel-wrap{ position:relative; }
+.carousel{ display:flex; gap:20px; overflow-x:auto; scroll-snap-type:x mandatory; padding:6px 0 22px; scrollbar-width:none; }
+.carousel::-webkit-scrollbar{ display:none; }
+.carousel .slide{ scroll-snap-align:start; flex:none; }
+.gallery .slide{ width:min(72vw,420px); border-radius:var(--radius); overflow:hidden; aspect-ratio:1/1.1; box-shadow:var(--shadow-2); }
+.gallery .slide img{ width:100%; height:100%; object-fit:cover; transition:transform .6s var(--ease); }
+.gallery .slide:hover img{ transform:scale(1.06); }
+.car-controls{ display:flex; gap:12px; justify-content:flex-end; margin-top:8px; }
+.car-btn{ width:48px; height:48px; border-radius:50%; border:1px solid var(--line); background:var(--paper); display:flex; align-items:center; justify-content:center; transition:all .3s var(--ease); }
+.car-btn:hover{ background:var(--ink); color:var(--paper); border-color:var(--ink); transform:translateY(-2px); }
+
+/* ============ REVIEWS ============ */
+.reviews-section{ background:var(--paper-soft); }
+.stats-row{ display:flex; gap:56px; flex-wrap:wrap; margin-bottom:54px; }
+.stat{ }
+.stat .num{ font-family:'Fraunces',serif; font-size:clamp(34px,4.6vw,52px); font-weight:700; color:var(--brick); }
+.stat .lbl{ font-size:13.5px; color:var(--ink-70); font-weight:600; margin-top:4px; }
+.stars{ display:flex; gap:3px; color:var(--gold); }
+.review .slide{ width:min(80vw,380px); background:var(--paper); border-radius:var(--radius); padding:26px; box-shadow:var(--shadow-1); border:1px solid var(--line); }
+.review .slide:hover{ box-shadow:var(--shadow-2); }
+.rev-head{ display:flex; align-items:center; gap:12px; }
+.rev-avatar{ width:46px; height:46px; border-radius:50%; object-fit:cover; background:var(--paper-soft); }
+.rev-name{ font-weight:700; font-size:14.5px; }
+.rev-date{ font-size:12.5px; color:var(--ink-70); }
+.rev-text{ margin-top:14px; font-size:14.5px; color:var(--ink-70); }
+
+/* ============ ORDER ============ */
+.order-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+@media (max-width:860px){ .order-grid{ grid-template-columns:1fr; } }
+.order-card{
+  padding:34px 28px; border-radius:var(--radius); background:var(--paper); border:1px solid var(--line);
+  display:flex; flex-direction:column; gap:18px; transition:transform .35s var(--ease), box-shadow .35s var(--ease);
+}
+.order-card:hover{ transform:translateY(-6px); box-shadow:var(--shadow-3); }
+.order-logo{ width:56px; height:56px; border-radius:16px; display:flex; align-items:center; justify-content:center; font-weight:800; font-family:'Fraunces',serif; font-size:20px; color:var(--paper); }
+.order-card h3{ font-size:20px; }
+.order-card p{ color:var(--ink-70); font-size:14.5px; }
+.order-card .btn{ margin-top:auto; width:100%; }
+
+/* ============ FIND US ============ */
+.find-grid{ display:grid; grid-template-columns:1fr 1fr; gap:0; border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-2); }
+@media (max-width:900px){ .find-grid{ grid-template-columns:1fr; } }
+.find-map{ min-height:420px; background:var(--paper-soft); position:relative; }
+.find-map iframe{ width:100%; height:100%; min-height:420px; border:0; filter:grayscale(.15) contrast(1.02); }
+.find-info{ background:var(--ink); color:var(--paper); padding:48px 42px; display:flex; flex-direction:column; justify-content:center; gap:26px; }
+.find-info h3{ color:var(--paper); font-size:26px; }
+.find-row{ display:flex; gap:16px; align-items:flex-start; }
+.find-row .ic{ flex:none; width:38px; height:38px; border-radius:10px; background:rgba(246,239,225,.08); display:flex; align-items:center; justify-content:center; color:var(--gold-light); }
+.find-row h5{ font-size:14px; font-weight:700; color:var(--paper); margin:0 0 4px; }
+.find-row p, .find-row a{ font-size:14px; color:rgba(246,239,225,.65); }
+.find-row a:hover{ color:var(--gold-light); }
+.hours-table{ display:grid; grid-template-columns:1fr auto; gap:6px 14px; font-size:13.5px; }
+.hours-table .d{ color:rgba(246,239,225,.5); }
+.hours-table .h{ color:var(--paper); font-weight:600; text-align:right; }
+
+/* ============ CONTACT ============ */
+.contact-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+@media (max-width:900px){ .contact-grid{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:520px){ .contact-grid{ grid-template-columns:1fr; } }
+.contact-card{ padding:28px 24px; border-radius:var(--radius-sm); border:1px solid var(--line); text-align:left; transition:all .3s var(--ease); }
+.contact-card:hover{ border-color:var(--brick); transform:translateY(-4px); box-shadow:var(--shadow-2); }
+.contact-card .ic{ width:42px; height:42px; border-radius:12px; background:var(--paper-soft); display:flex; align-items:center; justify-content:center; color:var(--brick); margin-bottom:14px; }
+.contact-card h4{ font-family:'Inter'; font-size:14.5px; font-weight:700; }
+.contact-card p, .contact-card a{ font-size:13.5px; color:var(--ink-70); margin-top:5px; display:block; }
+.contact-card a:hover{ color:var(--brick); }
+
+/* ============ FOOTER ============ */
+footer{ background:var(--ink); color:rgba(246,239,225,.6); padding:64px 0 28px; }
+.foot-grid{ display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:40px; }
+@media (max-width:800px){ .foot-grid{ grid-template-columns:1fr 1fr; } }
+.foot-logo{ font-family:'Fraunces',serif; font-size:24px; font-weight:700; color:var(--paper); display:flex; gap:10px; align-items:center; }
+footer p.tag{ margin-top:14px; font-size:14px; max-width:32ch; }
+.foot-col h5{ color:var(--paper); font-size:13px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:16px; }
+.foot-col a, .foot-col p{ display:block; font-size:14px; margin-bottom:10px; color:rgba(246,239,225,.6); transition:color .25s var(--ease); }
+.foot-col a:hover{ color:var(--gold-light); }
+.foot-social{ display:flex; gap:10px; margin-top:6px; }
+.foot-social a{ width:38px; height:38px; border-radius:50%; border:1px solid rgba(246,239,225,.18); display:flex; align-items:center; justify-content:center; margin:0; }
+.foot-social a:hover{ background:var(--brick); border-color:var(--brick); color:var(--paper); }
+.foot-bottom{ margin-top:54px; padding-top:24px; border-top:1px solid rgba(246,239,225,.12); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:12.5px; }
+
+/* back to top */
+.totop{
+  position:fixed; right:22px; bottom:22px; z-index:90; width:50px; height:50px; border-radius:50%;
+  background:var(--brick); color:var(--paper); display:flex; align-items:center; justify-content:center;
+  box-shadow:var(--shadow-3); opacity:0; pointer-events:none; transform:translateY(10px) scale(.9);
+  transition:all .35s var(--ease);
+}
+.totop.show{ opacity:1; pointer-events:auto; transform:translateY(0) scale(1); }
+.totop:hover{ transform:translateY(-3px) scale(1.05); }
+
+sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+</style>
+</head>
+<body class="lang-fr">
+
+<!-- ============ NAVBAR ============ -->
+<header class="nav" id="siteNav">
+  <div class="nav-inner">
+    <a href="#accueil" class="logo">
+      <svg class="mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="20" cy="20" r="19" stroke="currentColor" stroke-opacity=".35"/>
+        <path class="flame" d="M20 8c3 4-2 5-2 9 0 3 2 4 2 4s2-1 2-4c0-2-1-3-1-5 3 2 5 6 5 10 0 4-3 8-6 8s-6-4-6-8c0-6 3-9 6-14z" fill="var(--brick)"/>
+      </svg>
+      <span>Sham</span>
+    </a>
+
+    <nav class="links" id="navLinks">
+      <a href="#accueil" class="nl"><span class="lang-fr">Accueil</span><span class="lang-en">Home</span></a>
+      <a href="#menu" class="nl"><span class="lang-fr">Menu</span><span class="lang-en">Menu</span></a>
+      <a href="#apropos" class="nl"><span class="lang-fr">À propos</span><span class="lang-en">About</span></a>
+      <a href="#commander" class="nl"><span class="lang-fr">Commander</span><span class="lang-en">Order</span></a>
+      <a href="#trouver" class="nl"><span class="lang-fr">Nous trouver</span><span class="lang-en">Find us</span></a>
+      <a href="#contact" class="nl"><span class="lang-fr">Contact</span><span class="lang-en">Contact</span></a>
+    </nav>
+
+    <div class="nav-right">
+      <div class="lang-btn">
+        <button type="button" data-lang="fr" class="active">FR</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
+      <a href="#commander" class="btn btn-primary nav-cta-desktop" style="padding:11px 22px; font-size:13.5px;">
+        <span class="lang-fr">Commander</span><span class="lang-en">Order now</span>
+      </a>
+      <button class="burger" id="burgerBtn" aria-label="Menu" aria-expanded="false"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="accueil">
+  <div class="hero-media">
+    <img src="https://placehold.co/1800x1200/2a201a/f6efe1?text=Shawarma+%C3%A0+la+broche&font=playfair-display" alt="Shawarma Sham grillé à la broche, servi frais">
+  </div>
+  <div class="hero-inner">
+    <div class="hero-badge reveal up">
+      <span class="dot"></span>
+      <span class="lang-fr">Grillé à la minute · Plateau-Mont-Royal</span>
+      <span class="lang-en">Grilled to order · Plateau-Mont-Royal</span>
+    </div>
+    <h1 class="hero-title reveal up" style="transition-delay:.08s">
+      <span class="lang-fr">Le goût du <em>Sham</em>,<br>servi à la minute.</span>
+      <span class="lang-en">The taste of <em>Sham</em>,<br>served fresh, right now.</span>
+    </h1>
+    <p class="hero-sub reveal up" style="transition-delay:.16s">
+      <span class="lang-fr">« Sham » — l'ancien nom de Damas et du Levant. Chez nous, la viande tourne sur la broche toute la journée, les sauces sont faites maison et rien ne traîne au chaud plus de quelques minutes.</span>
+      <span class="lang-en">"Sham" — the old name for Damascus and the Levant. Our meat turns on the spit all day, every sauce is made in-house, and nothing sits under a heat lamp for long.</span>
+    </p>
+    <div class="hero-cta reveal up" style="transition-delay:.24s">
+      <span class="magnetic" data-magnetic><a href="#commander" class="btn btn-primary"><span class="lang-fr">Commander en ligne</span><span class="lang-en">Order online</span></a></span>
+      <a href="#menu" class="btn btn-ghost" style="color:var(--paper); border-color:rgba(246,239,225,.35);"><span class="lang-fr">Voir le menu</span><span class="lang-en">See the menu</span></a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span><span class="lang-fr">Défiler</span><span class="lang-en">Scroll</span></span>
+    <span class="line"></span>
+  </div>
+</section>
+
+<!-- ============ NOS INCONTOURNABLES ============ -->
+<section class="section-pad" id="incontournables">
+  <div class="wrap">
+    <div class="sec-head reveal up">
+      <span class="eyebrow"><span class="lang-fr">Les préférés</span><span class="lang-en">Fan favorites</span></span>
+      <h2><span class="lang-fr">Nos incontournables</span><span class="lang-en">Our must-haves</span></h2>
+      <p><span class="lang-fr">Les quatre plats que nos clients recommandent le plus, sur place comme en livraison.</span><span class="lang-en">The four dishes our guests recommend most, whether they eat in or order delivery.</span></p>
+    </div>
+
+    <div class="dish-grid stagger">
+      <article class="dish-card reveal scale" style="--i:0">
+        <div class="dish-media">
+          <img src="https://placehold.co/900x700/C4523F/f6efe1?text=Assiette+Poulet&font=playfair-display" alt="Assiette shawarma poulet Sham">
+          <span class="badge-pop"><span class="lang-fr">★ Populaire</span><span class="lang-en">★ Popular</span></span>
+        </div>
+        <div class="dish-body">
+          <div class="dish-top"><h3><span class="lang-fr">Assiette Shawarma Poulet</span><span class="lang-en">Chicken Shawarma Plate</span></h3><span class="dish-price">14,95 $</span></div>
+          <p class="dish-desc"><span class="lang-fr">Riz, salade fattouche, hummus maison et sauce à l'ail.</span><span class="lang-en">Rice, fattoush salad, house hummus and garlic sauce.</span></p>
+          <div class="dish-order"><span class="lang-fr">Ajouter à la commande</span><span class="lang-en">Add to order</span>
+            <span class="icon-circle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 19L19 5M19 5H8M19 5V16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+        </div>
+      </article>
+
+      <article class="dish-card reveal scale" style="--i:1">
+        <div class="dish-media">
+          <img src="https://placehold.co/900x700/7E2C21/f6efe1?text=Sandwich+B%C5%93uf&font=playfair-display" alt="Sandwich shawarma boeuf Sham">
+          <span class="badge-pop"><span class="lang-fr">★ Populaire</span><span class="lang-en">★ Popular</span></span>
+        </div>
+        <div class="dish-body">
+          <div class="dish-top"><h3><span class="lang-fr">Sandwich Shawarma Bœuf</span><span class="lang-en">Beef Shawarma Sandwich</span></h3><span class="dish-price">10,50 $</span></div>
+          <p class="dish-desc"><span class="lang-fr">Pain pita chaud, cornichons, oignons marinés, sauce tarator.</span><span class="lang-en">Warm pita, pickles, marinated onions, tarator sauce.</span></p>
+          <div class="dish-order"><span class="lang-fr">Ajouter à la commande</span><span class="lang-en">Add to order</span>
+            <span class="icon-circle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 19L19 5M19 5H8M19 5V16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+        </div>
+      </article>
+
+      <article class="dish-card reveal scale" style="--i:2">
+        <div class="dish-media">
+          <img src="https://placehold.co/900x700/5C6B49/f6efe1?text=Poutine+Shawarma&font=playfair-display" alt="Poutine shawarma Sham">
+          <span class="badge-pop"><span class="lang-fr">★ Signature</span><span class="lang-en">★ Signature</span></span>
+        </div>
+        <div class="dish-body">
+          <div class="dish-top"><h3><span class="lang-fr">Poutine Shawarma</span><span class="lang-en">Shawarma Poutine</span></h3><span class="dish-price">13,25 $</span></div>
+          <p class="dish-desc"><span class="lang-fr">Fromage en grains frais, sauce brune épicée, viande grillée.</span><span class="lang-en">Fresh cheese curds, spiced gravy, grilled shawarma meat.</span></p>
+          <div class="dish-order"><span class="lang-fr">Ajouter à la commande</span><span class="lang-en">Add to order</span>
+            <span class="icon-circle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 19L19 5M19 5H8M19 5V16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+        </div>
+      </article>
+
+      <article class="dish-card reveal scale" style="--i:3">
+        <div class="dish-media">
+          <img src="https://placehold.co/900x700/C79A3A/1B1512?text=Assiette+Falafel&font=playfair-display" alt="Assiette falafel Sham">
+          <span class="badge-pop"><span class="lang-fr">★ Végé</span><span class="lang-en">★ Veg</span></span>
+        </div>
+        <div class="dish-body">
+          <div class="dish-top"><h3><span class="lang-fr">Assiette Falafel</span><span class="lang-en">Falafel Plate</span></h3><span class="dish-price">12,75 $</span></div>
+          <p class="dish-desc"><span class="lang-fr">Falafels croustillants, taboulé, hummus, sauce tahini.</span><span class="lang-en">Crispy falafel, tabbouleh, hummus, tahini sauce.</span></p>
+          <div class="dish-order"><span class="lang-fr">Ajouter à la commande</span><span class="lang-en">Add to order</span>
+            <span class="icon-circle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 19L19 5M19 5H8M19 5V16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="torn"><svg viewBox="0 0 1200 34" preserveAspectRatio="none"><path d="M0 34 C 40 6, 80 30, 120 12 C 160 -2, 200 26, 240 10 C 280 0, 320 28, 360 14 C 400 2, 440 24, 480 8 C 520 -2, 560 26, 600 12 C 640 2, 680 24, 720 10 C 760 -2, 800 26, 840 14 C 880 2, 920 24, 960 8 C 1000 -2, 1040 26, 1080 12 C 1120 2, 1160 24, 1200 10 L 1200 34 Z" fill="var(--ink)"/></svg></div>
+
+<!-- ============ ABOUT / POURQUOI NOUS ============ -->
+<section class="section-pad about" id="apropos">
+  <div class="wrap about-grid">
+    <div class="reveal left">
+      <span class="eyebrow"><span class="lang-fr">Notre histoire</span><span class="lang-en">Our story</span></span>
+      <h2 style="margin-top:16px;">
+        <span class="lang-fr">« Sham » veut dire<br><span class="accent">le Levant</span>, notre héritage.</span>
+        <span class="lang-en">"Sham" means<br><span class="accent">the Levant</span>, our heritage.</span>
+      </h2>
+      <p class="lead">
+        <span class="lang-fr">Avant d'être un nom de restaurant, Sham est le nom donné à Damas et à toute la région du Levant. C'est aussi le nom que nos grands-parents utilisaient pour parler de la maison. On a voulu que chaque assiette qui sort de notre cuisine porte ce goût-là : simple, généreux, préparé avec des produits frais chaque matin.</span>
+        <span class="lang-en">Before it was a restaurant name, Sham was the name given to Damascus and the wider Levant — the word our grandparents used for home. We wanted every plate leaving our kitchen to carry that same feeling: simple, generous, made fresh every morning.</span>
+      </p>
+
+      <div class="why-list stagger">
+        <div class="why-item reveal up" style="--i:0">
+          <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M4 8c0 4 3 6 8 6s8-2 8-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <div><h4><span class="lang-fr">Grillé à la broche, toute la journée</span><span class="lang-en">Spit-grilled, all day long</span></h4><p><span class="lang-fr">Jamais réchauffé, jamais laissé sous une lampe chauffante.</span><span class="lang-en">Never reheated, never left under a heat lamp.</span></p></div>
+        </div>
+        <div class="why-item reveal up" style="--i:1">
+          <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 21c4-3 7-6.5 7-10.5A7 7 0 0 0 5 10.5C5 14.5 8 18 12 21Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+          <div><h4><span class="lang-fr">Sauces & marinades maison</span><span class="lang-en">House-made sauces & marinades</span></h4><p><span class="lang-fr">Ail, tahini, tarator : préparés chaque matin sur place.</span><span class="lang-en">Garlic, tahini, tarator — made fresh in-house every morning.</span></p></div>
+        </div>
+        <div class="why-item reveal up" style="--i:2">
+          <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <div><h4><span class="lang-fr">Prêt en quelques minutes</span><span class="lang-en">Ready in minutes</span></h4><p><span class="lang-fr">Sur place, à emporter ou livré, sans jamais sacrifier la qualité.</span><span class="lang-en">Dine-in, takeout or delivery, without cutting a single corner.</span></p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-media reveal right">
+      <div class="frame"><img src="https://placehold.co/1000x1250/1B1512/f6efe1?text=Cuisine+Sham&font=playfair-display" alt="Préparation du shawarma chez Sham"></div>
+      <div class="spit">
+        <svg viewBox="0 0 100 100" fill="none">
+          <circle cx="50" cy="50" r="46" stroke="var(--brick)" stroke-width="3" stroke-dasharray="6 8"/>
+          <path d="M50 20c8 10-4 12-4 22 0 7 4 10 4 10s4-3 4-10c0-5-2-7-2-12 7 5 11 14 11 24 0 10-6 18-13 18s-13-8-13-18c0-16 7-24 13-34z" fill="var(--brick)"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MENU ============ -->
+<section class="section-pad" id="menu" style="background:var(--paper-soft);">
+  <div class="wrap">
+    <div class="sec-head reveal up">
+      <span class="eyebrow"><span class="lang-fr">La carte</span><span class="lang-en">The menu</span></span>
+      <h2><span class="lang-fr">Notre menu</span><span class="lang-en">Our menu</span></h2>
+      <p><span class="lang-fr">Un aperçu de la carte — envoyez-nous vos photos de menu et on remplace ces exemples par vos plats et vos prix exacts.</span><span class="lang-en">A preview of the menu — send us your menu photos and we'll swap these examples for your real dishes and prices.</span></p>
+    </div>
+
+    <div class="menu-tabs" id="menuTabs">
+      <button class="menu-tab active" data-tab="shawarmas"><span class="lang-fr">Shawarmas</span><span class="lang-en">Shawarmas</span></button>
+      <button class="menu-tab" data-tab="assiettes"><span class="lang-fr">Assiettes</span><span class="lang-en">Plates</span></button>
+      <button class="menu-tab" data-tab="combos"><span class="lang-fr">Combos</span><span class="lang-en">Combos</span></button>
+      <button class="menu-tab" data-tab="poutines"><span class="lang-fr">Poutines</span><span class="lang-en">Poutines</span></button>
+      <button class="menu-tab" data-tab="wraps"><span class="lang-fr">Wraps</span><span class="lang-en">Wraps</span></button>
+      <button class="menu-tab" data-tab="falafels"><span class="lang-fr">Falafels</span><span class="lang-en">Falafel</span></button>
+      <button class="menu-tab" data-tab="entrees"><span class="lang-fr">Entrées</span><span class="lang-en">Starters</span></button>
+      <button class="menu-tab" data-tab="desserts"><span class="lang-fr">Desserts</span><span class="lang-en">Desserts</span></button>
+      <button class="menu-tab" data-tab="boissons"><span class="lang-fr">Boissons</span><span class="lang-en">Drinks</span></button>
+    </div>
+
+    <div class="menu-panel active" data-panel="shawarmas">
+      <div class="menu-list">
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/2a201a/f6efe1?text=Poulet&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Sandwich Shawarma Poulet</span><span class="lang-en">Chicken Shawarma Sandwich</span></h4><span class="price">9,95 $</span></div><p><span class="lang-fr">Pita chaud, sauce à l'ail, cornichons, tomates.</span><span class="lang-en">Warm pita, garlic sauce, pickles, tomato.</span></p></div></div>
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/7E2C21/f6efe1?text=B%C5%93uf&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Sandwich Shawarma Bœuf</span><span class="lang-en">Beef Shawarma Sandwich</span></h4><span class="price">10,50 $</span></div><p><span class="lang-fr">Pita chaud, sauce tarator, oignons marinés.</span><span class="lang-en">Warm pita, tarator sauce, marinated onions.</span></p></div></div>
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/C4523F/f6efe1?text=Poulet&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Shawarma Mixte</span><span class="lang-en">Mixed Shawarma</span></h4><span class="price">11,25 $</span></div><p><span class="lang-fr">Poulet et bœuf, double sauce au choix.</span><span class="lang-en">Chicken and beef, choice of double sauce.</span></p></div></div>
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/C79A3A/1B1512?text=Falafel&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Shawarma Végé (falafel)</span><span class="lang-en">Veg Shawarma (falafel)</span></h4><span class="price">9,50 $</span></div><p><span class="lang-fr">Falafels maison, légumes marinés, tahini.</span><span class="lang-en">House falafel, pickled veg, tahini.</span></p></div></div>
+      </div>
+    </div>
+
+    <div class="menu-panel" data-panel="assiettes">
+      <div class="menu-list">
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/C4523F/f6efe1?text=Poulet&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Assiette Shawarma Poulet</span><span class="lang-en">Chicken Shawarma Plate</span></h4><span class="price">14,95 $</span></div><p><span class="lang-fr">Riz, salade, hummus, sauce à l'ail.</span><span class="lang-en">Rice, salad, hummus, garlic sauce.</span></p></div></div>
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/A23A2C/f6efe1?text=Entr%C3%A9e&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Assiette Shawarma Bœuf</span><span class="lang-en">Beef Shawarma Plate</span></h4><span class="price">15,50 $</span></div><p><span class="lang-fr">Riz basmati, salade fattouche, tarator.</span><span class="lang-en">Basmati rice, fattoush, tarator.</span></p></div></div>
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/C79A3A/1B1512?text=Falafel&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Assiette Falafel</span><span class="lang-en">Falafel Plate</span></h4><span class="price">12,75 $</span></div><p><span class="lang-fr">Falafels, taboulé, hummus, tahini.</span><span class="lang-en">Falafel, tabbouleh, hummus, tahini.</span></p></div></div>
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/1B1512/f6efe1?text=Mixte&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Assiette Mixte Grill</span><span class="lang-en">Mixed Grill Plate</span></h4><span class="price">17,95 $</span></div><p><span class="lang-fr">Shish taouk, kefta, shawarma, riz et salade.</span><span class="lang-en">Shish taouk, kefta, shawarma, rice and salad.</span></p></div></div>
+      </div>
+    </div>
+
+    <div class="menu-panel" data-panel="combos">
+      <div class="menu-list">
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/5C6B49/f6efe1?text=Poutine&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Combo Sandwich</span><span class="lang-en">Sandwich Combo</span></h4><span class="price">15,95 $</span></div><p><span class="lang-fr">Sandwich au choix, frites, boisson.</span><span class="lang-en">Any sandwich, fries, drink.</span></p></div></div>
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/7E2C21/f6efe1?text=B%C5%93uf&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Combo Assiette</span><span class="lang-en">Plate Combo</span></h4><span class="price">18,95 $</span></div><p><span class="lang-fr">Assiette au choix, boisson, dessert.</span><span class="lang-en">Any plate, drink, dessert.</span></p></div></div>
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/C4523F/f6efe1?text=Poulet&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Combo Duo</span><span class="lang-en">Duo Combo</span></h4><span class="price">27,95 $</span></div><p><span class="lang-fr">2 sandwichs, 2 frites, 2 boissons.</span><span class="lang-en">2 sandwiches, 2 fries, 2 drinks.</span></p></div></div>
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/C79A3A/1B1512?text=Falafel&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Combo Famille</span><span class="lang-en">Family Combo</span></h4><span class="price">49,95 $</span></div><p><span class="lang-fr">4 assiettes au choix, pain, salades à partager.</span><span class="lang-en">4 plates of your choice, bread, shared salads.</span></p></div></div>
+      </div>
+    </div>
+
+    <div class="menu-panel" data-panel="poutines">
+      <div class="menu-list">
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/5C6B49/f6efe1?text=Poutine&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Poutine Shawarma Poulet</span><span class="lang-en">Chicken Shawarma Poutine</span></h4><span class="price">13,25 $</span></div><p><span class="lang-fr">Fromage en grains frais, sauce brune épicée.</span><span class="lang-en">Fresh cheese curds, spiced gravy.</span></p></div></div>
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/5C6B49/f6efe1?text=Poutine+B%C5%93uf&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Poutine Shawarma Bœuf</span><span class="lang-en">Beef Shawarma Poutine</span></h4><span class="price">13,95 $</span></div><p><span class="lang-fr">Généreuse portion, sauce à l'ail en accompagnement.</span><span class="lang-en">Generous portion, garlic sauce on the side.</span></p></div></div>
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/8a7a55/f6efe1?text=Classique&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Poutine Classique</span><span class="lang-en">Classic Poutine</span></h4><span class="price">8,50 $</span></div><p><span class="lang-fr">Fromage en grains et sauce maison.</span><span class="lang-en">Cheese curds and house gravy.</span></p></div></div>
+      </div>
+    </div>
+
+    <div class="menu-panel" data-panel="wraps">
+      <div class="menu-list">
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/5C6B49/f6efe1?text=Poutine&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Wrap Poulet Croustillant</span><span class="lang-en">Crispy Chicken Wrap</span></h4><span class="price">10,95 $</span></div><p><span class="lang-fr">Laitue, tomate, sauce maison, tortilla grillée.</span><span class="lang-en">Lettuce, tomato, house sauce, grilled tortilla.</span></p></div></div>
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/7E2C21/f6efe1?text=B%C5%93uf&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Wrap Shish Taouk</span><span class="lang-en">Shish Taouk Wrap</span></h4><span class="price">11,50 $</span></div><p><span class="lang-fr">Poulet mariné grillé, légumes, sauce à l'ail.</span><span class="lang-en">Grilled marinated chicken, veg, garlic sauce.</span></p></div></div>
+      </div>
+    </div>
+
+    <div class="menu-panel" data-panel="falafels">
+      <div class="menu-list">
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/C79A3A/1B1512?text=Falafel&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Sandwich Falafel</span><span class="lang-en">Falafel Sandwich</span></h4><span class="price">8,95 $</span></div><p><span class="lang-fr">Falafels maison, légumes marinés, tahini.</span><span class="lang-en">House falafel, pickled veg, tahini.</span></p></div></div>
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/A23A2C/f6efe1?text=Entr%C3%A9e&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Assiette Falafel Deluxe</span><span class="lang-en">Falafel Deluxe Plate</span></h4><span class="price">13,95 $</span></div><p><span class="lang-fr">Portion généreuse, houmous, taboulé, pita.</span><span class="lang-en">Generous portion, hummus, tabbouleh, pita.</span></p></div></div>
+      </div>
+    </div>
+
+    <div class="menu-panel" data-panel="entrees">
+      <div class="menu-list">
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/A23A2C/f6efe1?text=Entr%C3%A9e&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Hummus Maison</span><span class="lang-en">House Hummus</span></h4><span class="price">6,95 $</span></div><p><span class="lang-fr">Servi avec pain pita chaud.</span><span class="lang-en">Served with warm pita bread.</span></p></div></div>
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/A23A2C/f6efe1?text=Entr%C3%A9e&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Taboulé</span><span class="lang-en">Tabbouleh</span></h4><span class="price">6,50 $</span></div><p><span class="lang-fr">Persil, boulgour, tomate, citron.</span><span class="lang-en">Parsley, bulgur, tomato, lemon.</span></p></div></div>
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/A23A2C/f6efe1?text=Entr%C3%A9e&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Fattouche</span><span class="lang-en">Fattoush</span></h4><span class="price">7,25 $</span></div><p><span class="lang-fr">Salade croustillante, mélasse de grenade.</span><span class="lang-en">Crisp salad, pomegranate molasses.</span></p></div></div>
+      </div>
+    </div>
+
+    <div class="menu-panel" data-panel="desserts">
+      <div class="menu-list">
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/C79A3A/1B1512?text=Dessert&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Baklava (3 mcx)</span><span class="lang-en">Baklava (3 pcs)</span></h4><span class="price">5,95 $</span></div><p><span class="lang-fr">Pistaches, miel, pâte filo.</span><span class="lang-en">Pistachio, honey, filo pastry.</span></p></div></div>
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/C79A3A/1B1512?text=Dessert&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Knefeh</span><span class="lang-en">Knafeh</span></h4><span class="price">6,95 $</span></div><p><span class="lang-fr">Fromage fondant, sirop de rose.</span><span class="lang-en">Melted cheese, rose syrup.</span></p></div></div>
+      </div>
+    </div>
+
+    <div class="menu-panel" data-panel="boissons">
+      <div class="menu-list">
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/EEE3CC/1B1512?text=Boisson&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Jus de mangue</span><span class="lang-en">Mango Juice</span></h4><span class="price">3,95 $</span></div><p><span class="lang-fr">Frais et sans sucre ajouté.</span><span class="lang-en">Fresh, no added sugar.</span></p></div></div>
+        <div class="menu-item"><div class="thumb"><img src="https://placehold.co/200x200/EEE3CC/1B1512?text=Boisson&font=playfair-display" alt=""></div><div class="info"><div class="row1"><h4><span class="lang-fr">Boisson gazeuse</span><span class="lang-en">Soft Drink</span></h4><span class="price">2,75 $</span></div><p><span class="lang-fr">Format 355 ml.</span><span class="lang-en">355 ml can.</span></p></div></div>
+      </div>
+    </div>
+
+    <div class="menu-note reveal up">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="flex:none; margin-top:2px; color:var(--brick);"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v5M12 16h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <span><span class="lang-fr">Menu et prix à titre d'exemple, en attente des photos et de la carte officielle de Sham Shawarma.</span><span class="lang-en">Menu and prices shown as an example, pending Sham Shawarma's official photos and menu card.</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALERIE ============ -->
+<section class="section-pad" id="galerie">
+  <div class="wrap">
+    <div class="sec-head reveal up">
+      <span class="eyebrow"><span class="lang-fr">En images</span><span class="lang-en">In pictures</span></span>
+      <h2><span class="lang-fr">Notre galerie</span><span class="lang-en">Our gallery</span></h2>
+      <p><span class="lang-fr">Un aperçu de nos plats — les vraies photos remplaceront celles-ci dès réception.</span><span class="lang-en">A preview of our dishes — real photos will replace these as soon as we receive them.</span></p>
+    </div>
+
+    <div class="carousel-wrap">
+      <div class="carousel gallery" id="galleryCarousel">
+        <div class="slide"><img src="https://placehold.co/700x770/2a201a/f6efe1?text=Shawarma&font=playfair-display" alt="Shawarma grillé"></div>
+        <div class="slide"><img src="https://placehold.co/700x770/C4523F/f6efe1?text=Assiette&font=playfair-display" alt="Assiette shawarma"></div>
+        <div class="slide"><img src="https://placehold.co/700x770/7E2C21/f6efe1?text=Sandwich&font=playfair-display" alt="Sandwich shawarma"></div>
+        <div class="slide"><img src="https://placehold.co/700x770/5C6B49/f6efe1?text=Poutine&font=playfair-display" alt="Poutine shawarma"></div>
+        <div class="slide"><img src="https://placehold.co/700x770/C79A3A/1B1512?text=Falafel&font=playfair-display" alt="Falafel"></div>
+        <div class="slide"><img src="https://placehold.co/700x770/1B1512/f6efe1?text=En+cuisine&font=playfair-display" alt="Préparation en cuisine"></div>
+      </div>
+      <div class="car-controls">
+        <button class="car-btn" data-scroll="gallery:-1" aria-label="Précédent"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="car-btn" data-scroll="gallery:1" aria-label="Suivant"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AVIS GOOGLE ============ -->
+<section class="section-pad reviews-section" id="avis">
+  <div class="wrap">
+    <div class="sec-head reveal up">
+      <span class="eyebrow"><span class="lang-fr">La confiance de nos clients</span><span class="lang-en">Trusted by our guests</span></span>
+      <h2><span class="lang-fr">Ce qu'on dit de nous sur Google</span><span class="lang-en">What people say on Google</span></h2>
+    </div>
+
+    <div class="stats-row reveal up">
+      <div class="stat"><div class="num" data-count="4.9" data-decimal="1">0</div><div class="lbl"><span class="lang-fr">Note moyenne</span><span class="lang-en">Average rating</span></div><div class="stars">★★★★★</div></div>
+      <div class="stat"><div class="num" data-count="480">0</div><div class="lbl"><span class="lang-fr">Avis Google</span><span class="lang-en">Google reviews</span></div></div>
+      <div class="stat"><div class="num" data-count="98" data-suffix="%">0</div><div class="lbl"><span class="lang-fr">Recommandent Sham</span><span class="lang-en">Would recommend Sham</span></div></div>
+    </div>
+
+    <div class="carousel-wrap">
+      <div class="carousel review" id="reviewCarousel">
+        <div class="slide">
+          <div class="rev-head"><img class="rev-avatar" src="https://ui-avatars.com/api/?name=Camille+T&background=EEE3CC&color=1B1512&size=128&font-size=0.4&bold=true" alt=""><div><div class="rev-name">Camille T.</div><div class="rev-date"><span class="lang-fr">Il y a 2 semaines</span><span class="lang-en">2 weeks ago</span></div></div></div>
+          <div class="stars">★★★★★</div>
+          <p class="rev-text"><span class="lang-fr">Le meilleur shawarma du Plateau, sans hésiter. La sauce à l'ail est parfaite et tout est toujours frais.</span><span class="lang-en">Best shawarma on the Plateau, hands down. The garlic sauce is perfect and everything is always fresh.</span></p>
+        </div>
+        <div class="slide">
+          <div class="rev-head"><img class="rev-avatar" src="https://ui-avatars.com/api/?name=Marc-Andre+L&background=C79A3A&color=1B1512&size=128&font-size=0.4&bold=true" alt=""><div><div class="rev-name">Marc-André L.</div><div class="rev-date"><span class="lang-fr">Il y a 1 mois</span><span class="lang-en">1 month ago</span></div></div></div>
+          <div class="stars">★★★★★</div>
+          <p class="rev-text"><span class="lang-fr">Portions généreuses, service rapide et super amical. On revient chaque semaine.</span><span class="lang-en">Generous portions, fast and super friendly service. We come back every week.</span></p>
+        </div>
+        <div class="slide">
+          <div class="rev-head"><img class="rev-avatar" src="https://ui-avatars.com/api/?name=Sarah+B&background=A23A2C&color=f6efe1&size=128&font-size=0.4&bold=true" alt=""><div><div class="rev-name">Sarah B.</div><div class="rev-date"><span class="lang-fr">Il y a 1 mois</span><span class="lang-en">1 month ago</span></div></div></div>
+          <div class="stars">★★★★★</div>
+          <p class="rev-text"><span class="lang-fr">La poutine shawarma est incroyable. Propre, chaleureux, exactement ce qu'on attend d'un bon comptoir.</span><span class="lang-en">The shawarma poutine is incredible. Clean, welcoming — exactly what you want from a great counter.</span></p>
+        </div>
+        <div class="slide">
+          <div class="rev-head"><img class="rev-avatar" src="https://ui-avatars.com/api/?name=Youssef+K&background=5C6B49&color=f6efe1&size=128&font-size=0.4&bold=true" alt=""><div><div class="rev-name">Youssef K.</div><div class="rev-date"><span class="lang-fr">Il y a 2 mois</span><span class="lang-en">2 months ago</span></div></div></div>
+          <div class="stars">★★★★★</div>
+          <p class="rev-text"><span class="lang-fr">Ça goûte vraiment le fait maison. Les falafels sont croustillants à l'extérieur, tendres à l'intérieur.</span><span class="lang-en">Tastes truly homemade. The falafel is crispy outside, tender inside.</span></p>
+        </div>
+      </div>
+      <div class="car-controls">
+        <button class="car-btn" data-scroll="review:-1" aria-label="Précédent"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="car-btn" data-scroll="review:1" aria-label="Suivant"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+    <p style="margin-top:8px; font-size:12.5px; color:var(--ink-70);"><span class="lang-fr">Avis présentés à titre d'exemple — remplacés par vos avis Google réels lors de l'intégration finale.</span><span class="lang-en">Example reviews shown for preview — replaced with your real Google reviews at final integration.</span></p>
+  </div>
+</section>
+
+<!-- ============ COMMANDER ============ -->
+<section class="section-pad" id="commander">
+  <div class="wrap">
+    <div class="sec-head center reveal up" style="margin-left:auto;margin-right:auto;">
+      <span class="eyebrow"><span class="lang-fr">Livraison</span><span class="lang-en">Delivery</span></span>
+      <h2><span class="lang-fr">Commandez où vous voulez</span><span class="lang-en">Order however you like</span></h2>
+      <p><span class="lang-fr">Disponible sur les trois plus grandes plateformes de livraison au Canada.</span><span class="lang-en">Available on Canada's three biggest delivery platforms.</span></p>
+    </div>
+
+    <div class="order-grid stagger">
+      <div class="order-card reveal up" style="--i:0">
+        <div class="order-logo" style="background:#06C167;">UE</div>
+        <h3>Uber Eats</h3>
+        <p><span class="lang-fr">Livraison rapide, suivi en temps réel de votre commande.</span><span class="lang-en">Fast delivery with real-time order tracking.</span></p>
+        <a href="https://www.ubereats.com" target="_blank" rel="noopener" class="btn btn-primary"><span class="lang-fr">Commander sur Uber Eats</span><span class="lang-en">Order on Uber Eats</span></a>
+      </div>
+      <div class="order-card reveal up" style="--i:1">
+        <div class="order-logo" style="background:#EB1700;">DD</div>
+        <h3>DoorDash</h3>
+        <p><span class="lang-fr">Recevez votre shawarma préféré directement chez vous.</span><span class="lang-en">Get your favorite shawarma delivered straight to you.</span></p>
+        <a href="https://www.doordash.com" target="_blank" rel="noopener" class="btn btn-primary"><span class="lang-fr">Commander sur DoorDash</span><span class="lang-en">Order on DoorDash</span></a>
+      </div>
+      <div class="order-card reveal up" style="--i:2">
+        <div class="order-logo" style="background:#FF7A00;">SK</div>
+        <h3>SkipTheDishes</h3>
+        <p><span class="lang-fr">L'application canadienne, simple et efficace.</span><span class="lang-en">The Canadian app — simple and efficient.</span></p>
+        <a href="https://www.skipthedishes.com" target="_blank" rel="noopener" class="btn btn-primary"><span class="lang-fr">Commander sur Skip</span><span class="lang-en">Order on Skip</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NOUS TROUVER ============ -->
+<section class="section-pad" id="trouver" style="background:var(--paper-soft);">
+  <div class="wrap">
+    <div class="sec-head reveal up">
+      <span class="eyebrow"><span class="lang-fr">Localisation</span><span class="lang-en">Location</span></span>
+      <h2><span class="lang-fr">Nous trouver</span><span class="lang-en">Find us</span></h2>
+    </div>
+
+    <div class="find-grid reveal scale">
+      <div class="find-map">
+        <iframe src="https://www.google.com/maps?q=Plateau-Mont-Royal%2C%20Montr%C3%A9al&output=embed" loading="lazy" allowfullscreen title="Carte Sham Shawarma"></iframe>
+      </div>
+      <div class="find-info">
+        <h3><span class="lang-fr">Sham Shawarma</span><span class="lang-en">Sham Shawarma</span></h3>
+        <div class="find-row">
+          <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12Z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="9" r="2.4" stroke="currentColor" stroke-width="1.6"/></svg></span>
+          <div><h5><span class="lang-fr">Adresse</span><span class="lang-en">Address</span></h5><p><span class="lang-fr">[Adresse à confirmer], Plateau-Mont-Royal, Montréal</span><span class="lang-en">[Address to confirm], Plateau-Mont-Royal, Montréal</span></p></div>
+        </div>
+        <div class="find-row">
+          <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .7 2.9a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.4 1.9.6 2.9.7a2 2 0 0 1 1.7 2Z" stroke="currentColor" stroke-width="1.6"/></svg></span>
+          <div><h5><span class="lang-fr">Téléphone</span><span class="lang-en">Phone</span></h5><a href="tel:+15140000000">(514) 000-0000</a></div>
+        </div>
+        <div class="find-row">
+          <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <div>
+            <h5><span class="lang-fr">Heures d'ouverture</span><span class="lang-en">Opening hours</span></h5>
+            <div class="hours-table">
+              <span class="d"><span class="lang-fr">Lun – Jeu</span><span class="lang-en">Mon – Thu</span></span><span class="h">11:00 – 22:00</span>
+              <span class="d"><span class="lang-fr">Ven – Sam</span><span class="lang-en">Fri – Sat</span></span><span class="h">11:00 – 23:00</span>
+              <span class="d"><span class="lang-fr">Dimanche</span><span class="lang-en">Sunday</span></span><span class="h">12:00 – 21:00</span>
+            </div>
+          </div>
+        </div>
+        <a href="https://www.google.com/maps/search/?api=1&query=Sham+Shawarma+Montreal" target="_blank" rel="noopener" class="btn btn-light" style="margin-top:6px;">
+          <span class="lang-fr">Ouvrir dans Google Maps</span><span class="lang-en">Open in Google Maps</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="section-pad" id="contact">
+  <div class="wrap">
+    <div class="sec-head reveal up">
+      <span class="eyebrow"><span class="lang-fr">Contact</span><span class="lang-en">Contact</span></span>
+      <h2><span class="lang-fr">Parlons-en</span><span class="lang-en">Let's talk</span></h2>
+    </div>
+    <div class="contact-grid stagger">
+      <a class="contact-card reveal up" style="--i:0" href="tel:+15140000000">
+        <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .7 2.9a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.4 1.9.6 2.9.7a2 2 0 0 1 1.7 2Z" stroke="currentColor" stroke-width="1.6"/></svg></div>
+        <h4><span class="lang-fr">Téléphone</span><span class="lang-en">Phone</span></h4>
+        <p>(514) 000-0000</p>
+      </a>
+      <a class="contact-card reveal up" style="--i:1" href="mailto:info@shamshawarma.ca">
+        <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <h4><span class="lang-fr">Courriel</span><span class="lang-en">Email</span></h4>
+        <p>info@shamshawarma.ca</p>
+      </a>
+      <a class="contact-card reveal up" style="--i:2" href="#trouver">
+        <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12Z" stroke="currentColor" stroke-width="1.6"/></svg></div>
+        <h4><span class="lang-fr">Adresse</span><span class="lang-en">Address</span></h4>
+        <p><span class="lang-fr">Plateau-Mont-Royal, Montréal</span><span class="lang-en">Plateau-Mont-Royal, Montréal</span></p>
+      </a>
+      <a class="contact-card reveal up" style="--i:3" href="https://instagram.com" target="_blank" rel="noopener">
+        <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor"/></svg></div>
+        <h4><span class="lang-fr">Réseaux sociaux</span><span class="lang-en">Social media</span></h4>
+        <p>@shamshawarma</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-logo">
+          <svg width="30" height="30" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="19" stroke="var(--gold-light)" stroke-opacity=".4"/><path d="M20 8c3 4-2 5-2 9 0 3 2 4 2 4s2-1 2-4c0-2-1-3-1-5 3 2 5 6 5 10 0 4-3 8-6 8s-6-4-6-8c0-6 3-9 6-14z" fill="var(--gold-light)"/></svg>
+          Sham
+        </div>
+        <p class="tag"><span class="lang-fr">Le goût du Levant, grillé à la minute, sur le Plateau-Mont-Royal.</span><span class="lang-en">The taste of the Levant, grilled to order, on the Plateau-Mont-Royal.</span></p>
+        <div class="foot-social">
+          <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/></svg></a>
+          <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M14 9h3V6h-3c-1.7 0-3 1.3-3 3v2H8v3h3v7h3v-7h3l1-3h-4V9c0-.6.4-1 1-1Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h5><span class="lang-fr">Navigation</span><span class="lang-en">Navigation</span></h5>
+        <a href="#accueil"><span class="lang-fr">Accueil</span><span class="lang-en">Home</span></a>
+        <a href="#menu">Menu</a>
+        <a href="#apropos"><span class="lang-fr">À propos</span><span class="lang-en">About</span></a>
+        <a href="#commander"><span class="lang-fr">Commander</span><span class="lang-en">Order</span></a>
+      </div>
+      <div class="foot-col">
+        <h5><span class="lang-fr">Contact</span><span class="lang-en">Contact</span></h5>
+        <a href="tel:+15140000000">(514) 000-0000</a>
+        <a href="mailto:info@shamshawarma.ca">info@shamshawarma.ca</a>
+        <p><span class="lang-fr">Plateau-Mont-Royal, Montréal</span><span class="lang-en">Plateau-Mont-Royal, Montréal</span></p>
+      </div>
+      <div class="foot-col">
+        <h5><span class="lang-fr">Livraison</span><span class="lang-en">Delivery</span></h5>
+        <a href="https://www.ubereats.com" target="_blank" rel="noopener">Uber Eats</a>
+        <a href="https://www.doordash.com" target="_blank" rel="noopener">DoorDash</a>
+        <a href="https://www.skipthedishes.com" target="_blank" rel="noopener">SkipTheDishes</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Sham Shawarma. <span class="lang-fr">Tous droits réservés.</span><span class="lang-en">All rights reserved.</span></span>
+      <span><span class="lang-fr">Fait avec soin sur le Plateau-Mont-Royal.</span><span class="lang-en">Made with care on the Plateau-Mont-Royal.</span></span>
+    </div>
+  </div>
+</footer>
+
+<button class="totop" id="totop" aria-label="Retour en haut">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<script>
+(function(){
+  // ---------- NAV SCROLL STATE ----------
+  const nav = document.getElementById('siteNav');
+  const totop = document.getElementById('totop');
+  function onScroll(){
+    const y = window.scrollY;
+    nav.classList.toggle('scrolled', y > 40);
+    totop.classList.toggle('show', y > 600);
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // ---------- MOBILE MENU ----------
+  const burger = document.getElementById('burgerBtn');
+  const links = document.getElementById('navLinks');
+  burger.addEventListener('click', ()=>{
+    const open = links.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open ? 'true':'false');
+  });
+  links.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=> links.classList.remove('open')));
+
+  // ---------- LANGUAGE TOGGLE ----------
+  const langBtns = document.querySelectorAll('.lang-btn button');
+  langBtns.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const lang = btn.dataset.lang;
+      document.body.classList.remove('lang-fr','lang-en');
+      document.body.classList.add('lang-'+lang);
+      document.documentElement.lang = lang;
+      langBtns.forEach(b=> b.classList.toggle('active', b===btn));
+    });
+  });
+
+  // ---------- SCROLL REVEAL ----------
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:.16, rootMargin:'0px 0px -60px 0px'});
+  document.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+
+  // ---------- MENU TABS ----------
+  const tabs = document.querySelectorAll('.menu-tab');
+  tabs.forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      tabs.forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      document.querySelectorAll('.menu-panel').forEach(p=>{
+        p.classList.toggle('active', p.dataset.panel === tab.dataset.tab);
+      });
+    });
+  });
+
+  // ---------- CAROUSEL BUTTONS ----------
+  const galleryEl = document.getElementById('galleryCarousel');
+  const reviewEl = document.getElementById('reviewCarousel');
+  document.querySelectorAll('[data-scroll]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const [which, dir] = btn.dataset.scroll.split(':');
+      const el = which === 'gallery' ? galleryEl : reviewEl;
+      const amount = el.querySelector('.slide').getBoundingClientRect().width + 20;
+      el.scrollBy({left: amount * Number(dir), behavior:'smooth'});
+    });
+  });
+
+  // ---------- ANIMATED COUNTERS ----------
+  const counters = document.querySelectorAll('[data-count]');
+  const cio = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(!entry.isIntersecting) return;
+      const el = entry.target;
+      const target = parseFloat(el.dataset.count);
+      const decimals = parseInt(el.dataset.decimal || '0', 10);
+      const suffix = el.dataset.suffix || '';
+      const duration = 1400;
+      const start = performance.now();
+      function tick(now){
+        const p = Math.min(1, (now-start)/duration);
+        const eased = 1 - Math.pow(1-p, 3);
+        const val = target * eased;
+        el.textContent = (decimals ? val.toFixed(decimals) : Math.round(val)) + suffix;
+        if(p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+      cio.unobserve(el);
+    });
+  }, {threshold:.5});
+  counters.forEach(c=> cio.observe(c));
+
+  // ---------- MAGNETIC BUTTON ----------
+  document.querySelectorAll('[data-magnetic]').forEach(wrap=>{
+    const btn = wrap.querySelector('a,button');
+    wrap.addEventListener('mousemove', (e)=>{
+      const r = wrap.getBoundingClientRect();
+      const x = e.clientX - r.left - r.width/2;
+      const y = e.clientY - r.top - r.height/2;
+      btn.style.transform = `translate(${x*0.18}px, ${y*0.35}px)`;
+    });
+    wrap.addEventListener('mouseleave', ()=>{ btn.style.transform = 'translate(0,0)'; });
+  });
+
+  // ---------- SMOOTH ANCHOR OFFSET (fixed nav) ----------
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click', (e)=>{
+      const id = a.getAttribute('href');
+      if(id.length < 2) return;
+      const target = document.querySelector(id);
+      if(!target) return;
+      e.preventDefault();
+      const y = target.getBoundingClientRect().top + window.scrollY - 84;
+      window.scrollTo({top:y, behavior:'smooth'});
+    });
+  });
+
+  totop.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
+})();
+</script>
+</body>
+</html>
